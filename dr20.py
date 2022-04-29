@@ -1,7 +1,8 @@
 import time
 import random
-from environmentConstants import *
+from obstacles import *
 from HelperFunctions import *
+from environmentConstants import *
 
 LEFT_WHEEL_JOINT = "/leftWheelJoint_"
 RIGHT_WHEEL_JOINT = "/rightWheelJoint_"
@@ -24,7 +25,7 @@ class dr20:
         self.ultrasonicSensor = sim.getObject(nameString + ULTRASONIC_SENSOR)
         self.visionSensor = sim.getObject(VISION_SENSOR)
         self.visionSensorResolution = sim.getVisionSensorResolution(self.visionSensor)
-
+        self.obstacles = []
 
     def getCurrentAngle(self):
         lx, ly, lz = self.sim.getObjectPosition(self.leftWheel, self.floor)
@@ -67,6 +68,7 @@ class dr20:
 
     def readUltrasonicSensor(self):
         excludedObjects = ["Floor", "visibleElement", "element"]
+        inclusiveObjects = ["Queen", "Rook", "Bishop", "Pawn", "Knight"]
         reading = self.sim.readProximitySensor(self.ultrasonicSensor)
         print(reading)
 
@@ -78,14 +80,21 @@ class dr20:
                 if i in alias:
                     return False
 
+            for n in inclusiveObjects:
+                if n in alias:
+                    self.sim.addLog(self.sim.verbosity_default, "Chess Piece Found")
+                    position = self.sim.getObjectPosition(obstacleHandle, self.floor)
+                    obstacle = Obstacle(obstacleHandle, position, alias)
+                    self.obstacles.append(obstacle)
+                    return True
+
             return True
         else:
             return False
 
-    def checkCollision(self):
-        pass
-
     def generateRandomAngle(self):
+        #random.seed(420, 2)
+        print(random.getstate())
         value = random.randint(1, 269)
 
         if value <= 90:
@@ -93,7 +102,7 @@ class dr20:
         else:
             return -value
 
-    def randomlyExploreForSetTime(self, timeLimit=1200):
+    def randomlyExploreForSetTime(self, timeLimit=600):
         self.setBothMotorsToSameVelocity(0.5)
         sleep(5)
         self.stop()
@@ -107,7 +116,11 @@ class dr20:
             else:
                 self.setBothMotorsToSameVelocity(1.5)
 
-        # TODO: Add a return home function here!
+        self.setBothMotorsToSameVelocity(0)
+        print("Exploration time is complete")
+
+        for i in self.obstacles:
+            print(i)
 
     def readVisionSensor(self):
         print("reading vision sensor")

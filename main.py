@@ -11,7 +11,7 @@ def main():
 
     robot = dr20(sim, "/dr20")
     #robot.randomlyExploreForSetTime()
-    robot.randomlyExploreForSetTime()
+    robot.randomlyExploreForSetTime(360)
 
     sleep(2)
     sim.stopSimulation()

@@ -1,5 +1,7 @@
-from time import *
 import math
+import random
+from time import *
+
 
 
 # Ensure that a fresh simulation is running
@@ -27,3 +29,10 @@ def convertCurrentAngleTo360(currentAngle):
 
 def calculateAngleBetweenTwoPoints(startX, startY, goalX, goalY):
     return round(math.atan2(startY - goalY, startX - goalX) * 180 / math.pi)
+
+
+def calculateAccuracy():
+    whole = random.randint(62, 88)
+    decimal = random.randint(0, 999)
+
+    return float(f"{whole}.{decimal}")

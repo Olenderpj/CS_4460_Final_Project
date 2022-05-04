@@ -127,13 +127,6 @@ class dr20:
         print(f"Sensor Handle: {self.visionSensor}")
         print(f"Sensor Resolution: {self.visionSensorResolution}")
 
-        # image = self.sim.getVisionSensorImage(self.visionSensor)
-        # print(image)
-        # self.sim.saveImage(image, self.visionSensorResolution, 0, 'test.jpg', 100)
-
-
-
-
-
-
-
+        image = self.sim.getVisionSensorImage(self.visionSensor)
+        print(image)
+        self.sim.saveImage(image, self.visionSensorResolution, 0, 'capturedImage.jpg', 100)

@@ -1,6 +1,4 @@
-from HelperFunctions import *
 from zmqRemoteApi.clients.python.zmqRemoteApi import RemoteAPIClient
-from time import *
 from dr20 import *
 
 
@@ -10,7 +8,6 @@ def main():
     startSimulationEnv(sim)
 
     robot = dr20(sim, "/dr20")
-    #robot.randomlyExploreForSetTime()
     robot.randomlyExploreForSetTime(360)
 
     sleep(2)
